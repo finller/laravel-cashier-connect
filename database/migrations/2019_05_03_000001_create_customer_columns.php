@@ -13,7 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('cashierables', function (Blueprint $table) {
+            $table->morphs('cashierable');
             $table->string('stripe_id')->nullable()->index();
             $table->string('pm_type')->nullable();
             $table->string('pm_last_four', 4)->nullable();
@@ -28,13 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'stripe_id',
-                'pm_type',
-                'pm_last_four',
-                'trial_ends_at',
-            ]);
-        });
+        Schema::dropIfExists('cashierables');
     }
 };
