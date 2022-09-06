@@ -5,11 +5,11 @@ namespace Laravel\Cashier;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
- * @property ?CashierCustomer $customer
+ * @property ?CashierCustomer $cashierCustomer
  */
 trait Cashierable
 {
-    public function customer(): MorphOne
+    public function cashierCustomer(): MorphOne
     {
         return $this->morphOne(CashierCustomer::class, 'cashierable');
     }
