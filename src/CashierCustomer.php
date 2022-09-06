@@ -61,7 +61,7 @@ class CashierCustomer extends Model
         throw_if($this->stripeAccountId(), "The customer {$this->getKey()} has already a Stripe Account");
     }
 
-    public function createExpressAccount($params = null, $opts = null)
+    public function createExpressAccount($params = [], $opts = null)
     {
         $this->assertHasntStripeAccountId();
 
@@ -73,14 +73,33 @@ class CashierCustomer extends Model
         return $account;
     }
 
-    public function createAccountLink($params = null, $opts = null)
+    public function createAccountLink($params = [], $opts = null)
     {
         return $this->stripe()->accountLinks->create(
             [
-                'account' => $$this->stripe_account_id,
+                'account' => $this->stripe_account_id,
                 ...$params,
             ],
             $opts
         );
+    }
+
+    public function deleteAccount($params = null, $opts = null)
+    {
+        $this->assertHasStripeAccountId();
+        
+        $response = $this->stripe()->accounts->delete($this->stripeAccountId(), $params, $opts);
+
+        $this->stripe_account_id = null;
+        $this->save();
+        
+        return $response;
+    }
+
+    public function asStripeAccount($params = null, $opts = null)
+    {
+        $this->assertHasStripeAccountId();
+
+        return $this->stripe()->accounts->retrieve($this->stripeAccountId(), $params, $opts);
     }
 }
