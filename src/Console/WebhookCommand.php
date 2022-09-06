@@ -16,6 +16,9 @@ class WebhookCommand extends Command
         'payment_method.automatically_updated',
         'invoice.payment_action_required',
         'invoice.payment_succeeded',
+        // connect purpose
+        'account.updated',
+        'account.application.deauthorized'
     ];
 
     /**

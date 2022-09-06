@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::create('cashier_customers', function (Blueprint $table) {
+            $table->id();
+            $table->morphs('cashierable');
             $table->string('stripe_id')->nullable()->index();
+            $table->string('stripe_account_id')->nullable()->index();
+            $table->json('account_details')->nullable();
             $table->string('pm_type')->nullable();
             $table->string('pm_last_four', 4)->nullable();
             $table->timestamp('trial_ends_at')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -24,13 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'stripe_id',
-                'pm_type',
-                'pm_last_four',
-                'trial_ends_at',
-            ]);
-        });
+        Schema::dropIfExists('cashier_customers');
     }
 };

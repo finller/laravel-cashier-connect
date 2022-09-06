@@ -75,7 +75,7 @@ class Cashier
      *
      * @var string
      */
-    public static $customerModel = 'App\\Models\\User';
+    public static $customerModel = CashierCustomer::class;
 
     /**
      * The subscription model class name.
