@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('cashierables', function (Blueprint $table) {
             $table->morphs('cashierable');
             $table->string('stripe_id')->nullable()->index();
+            $table->string('stripe_account_id')->nullable()->index();
             $table->string('pm_type')->nullable();
             $table->string('pm_last_four', 4)->nullable();
             $table->timestamp('trial_ends_at')->nullable();

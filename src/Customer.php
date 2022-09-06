@@ -44,6 +44,22 @@ class Customer extends Model
 
     public function createExpressAccount($params = null, $opts = null)
     {
-        $this->stripe()->accounts->create(['type' => 'express', ...$params], [...$opts]);
+        $account = $this->stripe()->accounts->create(['type' => 'express', ...$params], $opts);
+
+        $this->stripe_account_id = $account->id;
+        $this->save();
+
+        return $account;
+    }
+
+    public function createAccountLink($params = null, $opts = null)
+    {
+        return $this->stripe()->accountLinks->create(
+            [
+                'account' => $$this->stripe_account_id,
+                ...$params,
+            ],
+            $opts
+        );
     }
 }
