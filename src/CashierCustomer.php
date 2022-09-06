@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @property ?string $stripe_account_id
+ * @property ?array $account_details
  * @property ?Model $cashierable
  */
 class CashierCustomer extends Model
