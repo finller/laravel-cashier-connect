@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('cashierables', function (Blueprint $table) {
+        Schema::create('cashier_customers', function (Blueprint $table) {
             $table->morphs('cashierable');
             $table->string('stripe_id')->nullable()->index();
             $table->string('stripe_account_id')->nullable()->index();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cashierables');
+        Schema::dropIfExists('cashier_customers');
     }
 };
