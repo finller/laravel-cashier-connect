@@ -15,10 +15,12 @@ class CashierCustomer extends Model
 
     protected $fillable = [
         'trial_ends_at',
+        'account_details'
     ];
 
-    protected $dates = [
-        'trial_ends_at',
+    protected $casts = [
+        'trial_ends_at' => 'datetime',
+        'account_details' => 'array'
     ];
 
     public function cashierable(): MorphTo
@@ -87,12 +89,12 @@ class CashierCustomer extends Model
     public function deleteAccount($params = null, $opts = null)
     {
         $this->assertHasStripeAccountId();
-        
+
         $response = $this->stripe()->accounts->delete($this->stripeAccountId(), $params, $opts);
 
         $this->stripe_account_id = null;
         $this->save();
-        
+
         return $response;
     }
 
