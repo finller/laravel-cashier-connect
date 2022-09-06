@@ -5,7 +5,11 @@ namespace Laravel\Cashier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Customer extends Model
+/**
+ * @property ?string $stripe_account_id
+ * @property ?Model $cashierable
+ */
+class CashierCustomer extends Model
 {
     use Billable;
 
@@ -42,8 +46,25 @@ class Customer extends Model
         return $this->cashierable?->stripeAddress();
     }
 
+    public function stripeAccountId()
+    {
+        return $this->stripe_account_id;
+    }
+
+    public function assertHasStripeAccountId()
+    {
+        throw_unless($this->stripeAccountId(), "The customer {$this->getKey()} hasn't a Stripe Account");
+    }
+
+    public function assertHasntStripeAccountId()
+    {
+        throw_if($this->stripeAccountId(), "The customer {$this->getKey()} has already a Stripe Account");
+    }
+
     public function createExpressAccount($params = null, $opts = null)
     {
+        $this->assertHasntStripeAccountId();
+
         $account = $this->stripe()->accounts->create(['type' => 'express', ...$params], $opts);
 
         $this->stripe_account_id = $account->id;
