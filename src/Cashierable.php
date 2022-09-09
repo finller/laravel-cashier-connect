@@ -23,4 +23,9 @@ trait Cashierable
 
         return $this->cashierCustomer;
     }
+
+    public function stripeInfo(): array
+    {
+        return [];
+    }
 }
