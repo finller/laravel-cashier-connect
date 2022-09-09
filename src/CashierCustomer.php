@@ -4,6 +4,7 @@ namespace Laravel\Cashier;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Arr;
 
 /**
  * @property ?string $stripe_account_id
@@ -31,22 +32,22 @@ class CashierCustomer extends Model
 
     public function stripeName()
     {
-        return $this->cashierable?->stripeName();
+        return Arr::get($this->cashierable?->stripeInfo(), 'name');
     }
 
     public function stripeEmail()
     {
-        return $this->cashierable?->stripeEmail();
+        return Arr::get($this->cashierable?->stripeInfo(), 'email');
     }
 
     public function stripePhone()
     {
-        return $this->cashierable?->stripePhone();
+        return Arr::get($this->cashierable?->stripeInfo(), 'phone');
     }
 
     public function stripeAddress()
     {
-        return $this->cashierable?->stripeAddress();
+        return Arr::get($this->cashierable?->stripeInfo(),'address');
     }
 
     public function stripeAccountId()
