@@ -13,4 +13,14 @@ trait Cashierable
     {
         return $this->morphOne(CashierCustomer::class, 'cashierable');
     }
+
+    public function getOrCreateCashierCustomer(): CashierCustomer
+    {
+        if (!$this->cashierCustomer) {
+            $this->cashierCustomer()->save($cashierCustomer = new CashierCustomer());
+            $this->setRelation('cashierCustomer', $cashierCustomer);
+        }
+
+        return $this->cashierCustomer;
+    }
 }
