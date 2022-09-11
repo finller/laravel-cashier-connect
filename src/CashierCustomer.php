@@ -88,6 +88,11 @@ class CashierCustomer extends Model
         );
     }
 
+    public function createLoginLink()
+    {
+        return $this->stripe()->accounts->createLoginLink($this->stripe_account_id);
+    }
+
     public function deleteAccount($params = null, $opts = null)
     {
         $this->assertHasStripeAccountId();
