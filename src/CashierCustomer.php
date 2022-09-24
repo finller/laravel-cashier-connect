@@ -47,7 +47,12 @@ class CashierCustomer extends Model
 
     public function stripeAddress()
     {
-        return Arr::get($this->cashierable?->stripeInfo(),'address');
+        return Arr::get($this->cashierable?->stripeInfo(), 'address');
+    }
+
+    public function stripePreferredLocales()
+    {
+        return Arr::get($this->cashierable?->stripeInfo(), 'stripePreferredLocales');
     }
 
     public function stripeAccountId()
