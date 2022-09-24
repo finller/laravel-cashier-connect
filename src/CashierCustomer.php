@@ -52,7 +52,7 @@ class CashierCustomer extends Model
 
     public function stripePreferredLocales()
     {
-        return Arr::get($this->cashierable?->stripeInfo(), 'stripePreferredLocales');
+        return Arr::get($this->cashierable?->stripeInfo(), 'preferredLocales');
     }
 
     public function stripeAccountId()
