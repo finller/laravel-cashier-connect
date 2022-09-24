@@ -12,7 +12,7 @@ use function Illuminate\Events\queueable;
 trait Cashierable
 {
 
-    public function bootCashierable()
+    public static function bootCashierable()
     {
         static::updated(queueable(function ($customer) {
             if ($customer->cashierCustomer?->hasStripeId()) {
