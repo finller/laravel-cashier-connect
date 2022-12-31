@@ -10,6 +10,8 @@ use Illuminate\Support\Arr;
  * @property ?string $stripe_account_id
  * @property ?array $account_details
  * @property ?Model $cashierable
+ * @property string $cashierable_type
+ * @property int $cashierable_id
  */
 class CashierCustomer extends Model
 {
