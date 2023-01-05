@@ -57,22 +57,22 @@ class CashierCustomer extends Model
         return Arr::get($this->cashierable?->stripeInfo(), 'preferredLocales');
     }
 
-    public function stripeAccountId()
+    public function stripeAccountId(): ?string
     {
         return $this->stripe_account_id;
     }
 
-    public function assertHasStripeAccountId()
+    public function assertHasStripeAccountId(): void
     {
         throw_unless($this->stripeAccountId(), "The customer {$this->getKey()} hasn't a Stripe Account");
     }
 
-    public function assertHasntStripeAccountId()
+    public function assertHasntStripeAccountId(): void
     {
         throw_if($this->stripeAccountId(), "The customer {$this->getKey()} has already a Stripe Account");
     }
 
-    public function createExpressAccount($params = [], $opts = null)
+    public function createExpressAccount($params = [], $opts = null): \Stripe\Account
     {
         $this->assertHasntStripeAccountId();
 
@@ -84,7 +84,7 @@ class CashierCustomer extends Model
         return $account;
     }
 
-    public function createAccountLink($params = [], $opts = null)
+    public function createAccountLink($params = [], $opts = null): \Stripe\AccountLink
     {
         return $this->stripe()->accountLinks->create(
             [
@@ -95,12 +95,12 @@ class CashierCustomer extends Model
         );
     }
 
-    public function createLoginLink()
+    public function createLoginLink(): \Stripe\LoginLink
     {
         return $this->stripe()->accounts->createLoginLink($this->stripe_account_id);
     }
 
-    public function deleteAccount($params = null, $opts = null)
+    public function deleteAccount($params = null, $opts = null): \Stripe\Account
     {
         $this->assertHasStripeAccountId();
 
@@ -112,7 +112,7 @@ class CashierCustomer extends Model
         return $response;
     }
 
-    public function asStripeAccount($params = null, $opts = null)
+    public function asStripeAccount($params = null, $opts = null): \Stripe\Account
     {
         $this->assertHasStripeAccountId();
 

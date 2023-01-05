@@ -31,6 +31,7 @@ trait Cashierable
         if (!$this->cashierCustomer) {
             $this->cashierCustomer()->save($cashierCustomer = new CashierCustomer());
             $this->setRelation('cashierCustomer', $cashierCustomer);
+            return $cashierCustomer;
         }
 
         return $this->cashierCustomer;
