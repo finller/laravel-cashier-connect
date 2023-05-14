@@ -5,6 +5,7 @@ namespace Laravel\Cashier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
+use Laravel\Cashier\Database\Factories\CashierCustomerFactory;
 
 /**
  * @property ?string $stripe_account_id
@@ -86,9 +87,11 @@ class CashierCustomer extends Model
 
     public function createAccountLink($params = [], $opts = null): \Stripe\AccountLink
     {
+        $this->assertHasStripeAccountId();
+
         return $this->stripe()->accountLinks->create(
             [
-                'account' => $this->stripe_account_id,
+                'account' => $this->stripeAccountId(),
                 ...$params,
             ],
             $opts
@@ -97,7 +100,9 @@ class CashierCustomer extends Model
 
     public function createLoginLink(): \Stripe\LoginLink
     {
-        return $this->stripe()->accounts->createLoginLink($this->stripe_account_id);
+        $this->assertHasStripeAccountId();
+
+        return $this->stripe()->accounts->createLoginLink($this->stripeAccountId());
     }
 
     public function deleteAccount($params = null, $opts = null): \Stripe\Account
@@ -107,9 +112,21 @@ class CashierCustomer extends Model
         $response = $this->stripe()->accounts->delete($this->stripeAccountId(), $params, $opts);
 
         $this->stripe_account_id = null;
+        $this->account_details = null;
         $this->save();
 
         return $response;
+    }
+
+    public function updateAccount($params = null, $opts = null): \Stripe\Account
+    {
+        $this->assertHasStripeAccountId();
+
+        return $this->stripe()->accounts->update(
+            $this->stripeAccountId(),
+            $params,
+            $opts
+        );
     }
 
     public function asStripeAccount($params = null, $opts = null): \Stripe\Account
@@ -117,5 +134,25 @@ class CashierCustomer extends Model
         $this->assertHasStripeAccountId();
 
         return $this->stripe()->accounts->retrieve($this->stripeAccountId(), $params, $opts);
+    }
+
+    public function payoutAccount($params = null, $opts = []): \Stripe\Payout
+    {
+        $this->assertHasStripeAccountId();
+
+        return $this->stripe()->payouts->create($params, [
+            ...$opts,
+            'stripe_account' => $this->stripeAccountId(),
+        ]);
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return CashierCustomerFactory::new();
     }
 }
