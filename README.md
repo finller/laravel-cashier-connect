@@ -31,7 +31,6 @@ Please review [our security policy](https://github.com/laravel/cashier/security/
 
 Laravel Cashier is open-sourced software licensed under the [MIT license](LICENSE.md).
 
-
 ## Sync with laravel/cashier-stripe
 
 Add the remote, call it "upstream":
@@ -46,8 +45,8 @@ Make sure that you're on your master branch:
 
 `git checkout 14.x`
 
- Rewrite your master branch so that any commits of yours that
- aren't already in upstream/master are replayed on top of that
- other branch:
+Rewrite your master branch so that any commits of yours that
+aren't already in upstream/master are replayed on top of that
+other branch:
 
-git rebase upstream/14.x
+`git rebase upstream/14.x`
