@@ -50,3 +50,5 @@ aren't already in upstream/master are replayed on top of that
 other branch:
 
 `git rebase upstream/15.x`
+
+`git push -f origin 15.x`
